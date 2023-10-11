@@ -19,8 +19,21 @@ public class UserController {
         return result;
     }
 
-    public Result getUserInfo(@RequestBody String token) {
+    @GetMapping("getUserInfo")
+    public Result getUserInfo(@RequestHeader String token) {
         Result result = userService.getUserInfo(token);
+        return result;
+    }
+
+    @PostMapping("checkUserName")
+    public Result checkUserName(String username) {
+        Result result = userService.checkUserName(username);
+        return result;
+    }
+
+    @PostMapping("regist")
+    public Result regist(@RequestBody User user) {
+        Result result = userService.regist(user);
         return result;
     }
 

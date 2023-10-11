@@ -53,6 +53,46 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     public Result getUserInfo(String token) {
         boolean expiration = jwtHelper.isExpiration(token);
 
+        if (expiration) {
+            return Result.build(null,ResultCodeEnum.NOTLOGIN);
+        }
+
+        int userId = jwtHelper.getUserId(token).intValue();
+        User user = userMapper.selectById(userId);
+        user.setUserPwd("");
+        Map data = new HashMap<>();
+        data.put("loginUser",user);
+
+        return Result.ok(data);
+    }
+
+    @Override
+    public Result checkUserName(String username) {
+        LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(User::getUsername,username);
+        Long count = userMapper.selectCount(lambdaQueryWrapper);
+
+        if (count == 0) {
+            return Result.ok(null);
+        }
+        
+        return Result.build(null,ResultCodeEnum.USERNAME_USED);
+    }
+
+    @Override
+    public Result regist(User user) {
+        LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(User::getUsername,user.getUsername());
+        Long count = userMapper.selectCount(lambdaQueryWrapper);
+
+        if (count > 0) {
+            return Result.build(null,ResultCodeEnum.USERNAME_USED);
+        }
+
+        user.setUserPwd(MD5Util.encrypt(user.getUserPwd()));
+        userMapper.insert(user);
+
+        return Result.ok(null);
     }
 }
 

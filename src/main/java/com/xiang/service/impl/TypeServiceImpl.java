@@ -4,7 +4,11 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xiang.pojo.Type;
 import com.xiang.service.TypeService;
 import com.xiang.mapper.TypeMapper;
+import com.xiang.utils.Result;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
 * @author chenwentao
@@ -15,6 +19,14 @@ import org.springframework.stereotype.Service;
 public class TypeServiceImpl extends ServiceImpl<TypeMapper, Type>
     implements TypeService{
 
+    @Autowired
+    private TypeMapper typeMapper;
+
+    @Override
+    public Result findAllTypes() {
+        List<Type> types = typeMapper.selectList(null);
+        return Result.ok(types);
+    }
 }
 
 
