@@ -1,12 +1,11 @@
 package com.xiang.controller;
 
+import com.xiang.pojo.vo.PortalVo;
+import com.xiang.service.HeadlineService;
 import com.xiang.service.TypeService;
 import com.xiang.utils.Result;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("portal")
@@ -15,9 +14,24 @@ public class PortalController {
     @Autowired
     private TypeService typeService;
 
+    @Autowired
+    private HeadlineService headlineService;
+
     @GetMapping("findAllTypes")
     public Result findAllTypes() {
         Result result = typeService.findAllTypes();
+        return result;
+    }
+
+    @PostMapping("findNewsPage")
+    public Result findNewsPage(@RequestBody PortalVo portalVo) {
+        Result result = headlineService.findNewsPage(portalVo);
+        return result;
+    }
+
+    @PostMapping("showHeadlineDetail")
+    public Result showHeadlineDetail(Integer hid) {
+        Result result = headlineService.showHeadlineDetail(hid);
         return result;
     }
 }

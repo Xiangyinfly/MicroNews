@@ -2,6 +2,8 @@ package com.xiang.service;
 
 import com.xiang.pojo.Headline;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.xiang.pojo.vo.PortalVo;
+import com.xiang.utils.Result;
 
 /**
 * @author chenwentao
@@ -10,4 +12,10 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface HeadlineService extends IService<Headline> {
 
+    Result findNewsPage(PortalVo portalVo);
+
+    Result showHeadlineDetail(Integer hid);
+
+    Result publish(Headline headline, String token);
 }
+
