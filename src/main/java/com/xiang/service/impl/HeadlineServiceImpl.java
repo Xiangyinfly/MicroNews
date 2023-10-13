@@ -72,4 +72,15 @@ public class HeadlineServiceImpl extends ServiceImpl<HeadlineMapper, Headline>
         headlineMapper.insert(headline);
         return Result.ok(null);
     }
+
+    @Override
+    public Result updateHeadline(Headline headline) {
+        Integer version = headlineMapper.selectById(headline.getHid()).getVersion();
+        headline.setVersion(version);
+        headline.setUpdateTime(new Date());
+
+        headlineMapper.updateById(headline);
+        return Result.ok(null);
+    }
+
 }
